@@ -10,6 +10,9 @@
         <class>model.Cliente</class>
         <class>model.Livro</class>
         <class>model.Locacao</class>
+        <class>entity.Avaliacao</class>
+        <class>entity.Filme</class>
+        <class>entity.Playlist</class>
         <class>entity.Usuario</class>
         
         <properties>

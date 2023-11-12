@@ -15,13 +15,13 @@ public class AvaliacaoTest {
 
 	public static void main(String[] args) {
 
-		Usuario usuario = new Usuario("zico@hotmail.com", "123", LocalDate.now());
+		Usuario usuario = new Usuario("bruno@hotmail.com", "123", LocalDate.now());
 		
-		Playlist playlist = new Playlist("Filmes Ação", LocalDateTime.now(), usuario);
+		Playlist playlist = new Playlist("Filmes Loucos", LocalDateTime.now(), usuario);
 		
-		Filme filme = new Filme("MIB 2", playlist, LocalDate.now(), 50);
+		Filme filme = new Filme("MIB 2", playlist, LocalDate.now(), 40);
 		
-		Avaliacao avaliacao = new Avaliacao(2, LocalDate.now(), "Filme muito ruim!", filme);
+		Avaliacao avaliacao = new Avaliacao(3, LocalDate.now(), "Filme mediano...", filme);
 		
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("playlisterPU");
 		EntityManager em = emf.createEntityManager();
