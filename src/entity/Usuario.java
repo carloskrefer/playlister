@@ -1,12 +1,15 @@
 package entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Usuario {
@@ -61,5 +64,10 @@ public class Usuario {
 	
 	private LocalDate dataNascimento;
 	
+	// CascadeType.REMOVE faz com que remova todas playlists
+	// deste usuário quando ele é removido.
+	// mappedBy é o nome do atributo com tag @ManyToOne na playlist.
+	@OneToMany(cascade = CascadeType.REMOVE, mappedBy = "usuario")
+    private List<Playlist> playlists;
 
 }
