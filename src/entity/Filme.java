@@ -21,7 +21,6 @@ public class Filme {
 	private String nome;
 	
 	@ManyToOne
-	//O Join Column vai dizer qual coluna estar� recebendo esta chave
 	@JoinColumn(name="playlist_id")
 	private Playlist playlist;
 	
