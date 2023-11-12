@@ -43,7 +43,13 @@ public class Model<T> {
 		EntityManager em = emf.createEntityManager();
 		
 		em.getTransaction().begin();
+		
+		// O "T objeto" foi instanciado antes do "EntityManager em" ser instanciado. Ou seja,
+		// o entity manager não está gerenciando esse objeto. Pra isso, estamos fazendo um "merge"
+		// para que esse objeto passe a ser gerenciado pelo entity manager atual. Caso contrário,
+		// a edição não será persistida.
 		em.merge(objeto);
+		
 		em.getTransaction().commit();
 		
 		em.close();
@@ -58,6 +64,7 @@ public class Model<T> {
 		EntityManager em = emf.createEntityManager();
 		
 		em.getTransaction().begin();
+		
 		Query query = em.createQuery("SELECT obj FROM " + classe.getSimpleName() + " obj");
 		List<T> objetos = query.getResultList();
 				
@@ -71,11 +78,21 @@ public class Model<T> {
 	}
 	
 	public static void main(String[] args) {
-		List<Usuario> usuarios = new Model(Usuario.class).buscar();
+		// teste mostrando como que faz a busca e update
+		Model<Usuario> model = new Model(Usuario.class);
+		List<Usuario> usuarios = model.buscar();
 		
-		for (Usuario usuario : usuarios) {
-			System.out.println(usuario.getEmail());
-		}
+		Usuario usuario = usuarios
+				.stream()
+				.filter(user -> user.getEmail().equals("rogerio@hotmail.com"))
+				.findFirst()
+				.get();
+		
+		usuario.setSenha("322");
+		
+		model.editar(usuario);
+		
+		
 	}
 	
 	
