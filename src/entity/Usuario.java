@@ -53,7 +53,7 @@ public class Usuario {
 		this.dataNascimento = dataNascimento;
 	}
 
-	@Column(length=255)
+	@Column(length=255, unique=true)
 	private String email;
 	
 	@Column(length=255)
