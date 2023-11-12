@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Avaliacao {
@@ -24,7 +25,7 @@ public class Avaliacao {
 	@Column(length=255)
 	private String observacao;
 	
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name="filme_id")
 	private Filme filme;
 	

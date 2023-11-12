@@ -107,7 +107,7 @@ public class Model<T> {
 		
 		Usuario usuario = usuarios
 				.stream()
-				.filter(user -> user.getEmail().equals("jose@yahoo.com"))
+				.filter(user -> user.getEmail().equals("bruno@hotmail.com"))
 				.findFirst()
 				.get();
 		
