@@ -55,7 +55,7 @@ public class UsuarioService {
 		return usuarioModel.buscar();
 	}
 	
-	public void deletarConta(Usuario usuario) {
+	public void deletarConta(Usuario usuario) {	
 		usuarioModel.remover(usuario);
 	}
 	

@@ -19,26 +19,33 @@ public class Controller {
 		usuarioService = new UsuarioService();
 		usuarioView = new UsuarioView();
 		
-		usuarioLogado = controlarLoginOuCadastro();
+		while (true) {
+			usuarioLogado = controlarLoginOuCadastro();
 		
-		controlarDashboardUsuarioLogado();
+			controlarDashboardUsuarioLogado();
+		}
 		
 	}
 
 	private static void controlarDashboardUsuarioLogado() {
 		OpcaoMenuDashboard opcaoMenuDashboard = usuarioView.selecionarOpcaoDashboard();
 		
-		switch (opcaoMenuDashboard) {
-		case PAGINA_DO_USUARIO:
-			controlarPaginaUsuario();
-			break;
-
-		default:
-			break;
+		while (true) {
+			switch (opcaoMenuDashboard) {
+			case PAGINA_DO_USUARIO:
+				OpcaoMenuPaginaUsuario opcaoSelecionada = controlarPaginaUsuario();
+				if (opcaoSelecionada.equals(OpcaoMenuPaginaUsuario.EXCLUIR_CONTA)) {
+					return;
+				}
+				break;
+				
+			case MINHAS_PLAYLISTS:
+				break;
+			}
 		}
 	}
 	
-	public static void controlarPaginaUsuario() {
+	public static OpcaoMenuPaginaUsuario controlarPaginaUsuario() {
 		OpcaoMenuPaginaUsuario opcaoMenuPaginaUsuario = usuarioView.selecionarOpcaoMenuPaginaUsuario();
 		
 		switch (opcaoMenuPaginaUsuario) {
@@ -46,9 +53,17 @@ public class Controller {
 			List<Usuario> todosUsuarios = usuarioService.buscarTodosUsuarios();
 			usuarioView.imprimirUsuarios(todosUsuarios);
 			break;
+			
 		case EXCLUIR_CONTA:
 			usuarioService.deletarConta(usuarioLogado);
+			usuarioLogado = null;
+			break;
+			
+		case VOLTAR:
+			break;
 		}
+		
+		return opcaoMenuPaginaUsuario;
 	}
 	
 	private static Usuario controlarLoginOuCadastro() {
