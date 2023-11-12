@@ -77,6 +77,29 @@ public class Model<T> {
 		
 	}
 	
+	// TODO: colocar exceções
+	public void remover(T objeto) {
+		
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistanceUnit);
+		EntityManager em = emf.createEntityManager();
+		
+		em.getTransaction().begin();
+
+		// Explicação do que faz o merge() se encontra no método editar()
+		T objetoGerenciadoPelaEntityAtual = em.merge(objeto);
+		
+		// A única diferença do editar() é que pra remover() é que temos que informar o objeto gerenciado.
+		// Se abaixo informar remove(objeto), dará erro, pois 'objeto' não está gerenciado. É o merge()
+		// que retorna o objeto gerenciado.
+		em.remove(objetoGerenciadoPelaEntityAtual);
+				
+		em.getTransaction().commit();
+		
+		em.close();
+		emf.close();
+		
+	}
+	
 	public static void main(String[] args) {
 		// teste mostrando como que faz a busca e update
 		Model<Usuario> model = new Model(Usuario.class);
@@ -84,13 +107,13 @@ public class Model<T> {
 		
 		Usuario usuario = usuarios
 				.stream()
-				.filter(user -> user.getEmail().equals("rogerio@hotmail.com"))
+				.filter(user -> user.getEmail().equals("jose@yahoo.com"))
 				.findFirst()
 				.get();
 		
-		usuario.setSenha("322");
+		model.remover(usuario);
 		
-		model.editar(usuario);
+		
 		
 		
 	}
