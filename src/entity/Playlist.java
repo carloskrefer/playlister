@@ -13,6 +13,26 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class Playlist {
 
+	public Long getId() {
+		return id;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public LocalDateTime getDataHoraCriacao() {
+		return dataHoraCriacao;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long id;
