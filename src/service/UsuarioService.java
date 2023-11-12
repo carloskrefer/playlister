@@ -24,15 +24,30 @@ public class UsuarioService {
 		UsuarioModel usuarioModel = new UsuarioModel();
 		
 		boolean isEmailJaCadastrado = usuarioModel
-				.buscar()
-				.stream()
-				.anyMatch(user -> user.getEmail().equals(usuario.getEmail()));
+				.conferirSeEmailJaEstaCadastrado(usuario.getEmail());
 		
 		if (isEmailJaCadastrado) {
 			throw new EmailJaCadastradoException();
 		}
 		
 		usuarioModel.cadastrar(usuario);
+	}
+	
+	public Usuario entrar(String[] dadosLogin) throws LoginInvalidoException {
+		Usuario usuario;
+		String email = dadosLogin[0];
+		String senha = dadosLogin[1];
+		
+		UsuarioModel usuarioModel = new UsuarioModel();
+		
+		try {
+			usuario = usuarioModel.buscarUsuarioPorLoginMaisSenha(email, senha);
+		} catch (Exception e) {
+			throw new LoginInvalidoException();
+		}
+		
+		return usuario;
+		
 	}
 	
 	

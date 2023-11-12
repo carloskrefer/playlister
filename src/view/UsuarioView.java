@@ -66,5 +66,23 @@ public class UsuarioView extends View {
 		System.out.println("Desculpe, este e-mail já está cadastrado.\n");
 	}
 	
+	public void imprimirMensagemCadastroComSucesso() {
+		imprimirTitulo("Sucesso");
+		
+		System.out.println("Cadastro realizado com sucesso!\n");
+	}
+	
+	public void imprimirMensagemLoginInvalido() {
+		imprimirTitulo("Erro");
+		
+		System.out.println("E-mail ou senha não são válidos.\n");
+	}
+	
+	public void imprimirMensagemLoginComSucesso() {
+		imprimirTitulo("Sucesso");
+		
+		System.out.println("Login realizado com sucesso!\n");
+	}
+	
 	
 }
