@@ -1,6 +1,7 @@
 package view;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import entity.Usuario;
 
@@ -10,8 +11,24 @@ public class UsuarioView extends View {
 		ENTRAR, CADASTRAR
 	}
 	
+	public enum OpcaoMenuDashboard {
+		PAGINA_DO_USUARIO, MINHAS_PLAYLISTS
+	}
+	
+	public enum OpcaoMenuPaginaUsuario {
+		VISUALIZAR_TODOS_USUARIOS, VOLTAR, EXCLUIR_CONTA
+	}
+	
 	public UsuarioView() {
 		super();
+	}
+	
+	public OpcaoMenuDashboard selecionarOpcaoDashboard() {
+		imprimirTitulo("Dashboard");
+
+		exibirOpcoes(OpcaoMenuDashboard.values());
+		
+		return selecionarOpcao(OpcaoMenuDashboard.values());
 	}
 	
 	public OpcaoMenuInicial selecionarOpcaoMenuInicial() {
@@ -21,6 +38,14 @@ public class UsuarioView extends View {
 		exibirOpcoes(OpcaoMenuInicial.values());
 		
 		return selecionarOpcao(OpcaoMenuInicial.values());
+	}
+	
+	public OpcaoMenuPaginaUsuario selecionarOpcaoMenuPaginaUsuario() {
+		imprimirTitulo("Página do usuário");
+		
+		exibirOpcoes(OpcaoMenuPaginaUsuario.values());
+		
+		return selecionarOpcao(OpcaoMenuPaginaUsuario.values());
 	}
 	
 	public Usuario cadastrar() {
@@ -84,5 +109,20 @@ public class UsuarioView extends View {
 		System.out.println("Login realizado com sucesso!\n");
 	}
 	
+	public void imprimirUsuarios(List<Usuario> usuarios) {
+		imprimirTitulo("Lista de usuários");
+		
+		System.out.println("Confira o ID de todos usuários, seus e-mails e data de nascimento.\n");
+		
+		usuarios.stream().forEach((usuario) -> {
+			System.out.println(
+					usuario.getId() + " \t" + 
+					usuario.getEmail() + " \t" + 
+					usuario.getDataNascimento()
+			);
+		});
+		
+		System.out.println();
+	}
 	
 }

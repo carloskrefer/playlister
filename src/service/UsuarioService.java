@@ -2,14 +2,16 @@ package service;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
 
 import entity.Usuario;
 import model.UsuarioModel;
 
 public class UsuarioService {
-
+	UsuarioModel usuarioModel;
+	
 	public UsuarioService() {
-		
+		usuarioModel = new UsuarioModel();
 	}
 	
 	public void cadastrar(Usuario usuario) throws UsuarioNaoPossuiIdadeMinimaException,
@@ -21,7 +23,7 @@ public class UsuarioService {
 			throw new UsuarioNaoPossuiIdadeMinimaException();
 		}
 		
-		UsuarioModel usuarioModel = new UsuarioModel();
+		usuarioModel = new UsuarioModel();
 		
 		boolean isEmailJaCadastrado = usuarioModel
 				.conferirSeEmailJaEstaCadastrado(usuario.getEmail());
@@ -38,7 +40,7 @@ public class UsuarioService {
 		String email = dadosLogin[0];
 		String senha = dadosLogin[1];
 		
-		UsuarioModel usuarioModel = new UsuarioModel();
+		usuarioModel = new UsuarioModel();
 		
 		try {
 			usuario = usuarioModel.buscarUsuarioPorLoginMaisSenha(email, senha);
@@ -46,8 +48,15 @@ public class UsuarioService {
 			throw new LoginInvalidoException();
 		}
 		
-		return usuario;
-		
+		return usuario;	
+	}
+	
+	public List<Usuario> buscarTodosUsuarios() {
+		return usuarioModel.buscar();
+	}
+	
+	public void deletarConta(Usuario usuario) {
+		usuarioModel.remover(usuario);
 	}
 	
 	

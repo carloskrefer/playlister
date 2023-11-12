@@ -24,7 +24,5 @@ public class UsuarioModel extends ModelCreateDeleteEditBusca<Usuario> {
 				.findFirst()
 				.get();
 	}
-	
-	
 
 }
