@@ -3,6 +3,7 @@ package model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Consumer;
 
 import entity.Avaliacao;
 import entity.Filme;
@@ -21,45 +22,55 @@ public class Model<T> {
 		this.classe = classe;
 	}
 	
-	// TODO: colocar exceções
-	public void cadastrar(T objeto) {
-	
+	// Este método existe pra evitar repetição de código no cadastrar(), editar(), remover(), etc.
+	//
+	// Consumer<EntityManager> operacao
+	// 		Consumer = Interface funcional do Java que possui um único argumento.
+	//			Obs 1: 	Interface funcional é toda interface com um único método abstrato. Precisamos
+	//		     		usar interfaces funcionais quando queremos, por exemplo, passar uma função 
+	//			 		lambda como parâmetro.
+	//			Obs 2:  O nome desse método abstrato, na interface Consumer, se chama accept(T t). Como
+	//					o parâmetro genérico é <EntityManager>, ficou accept(EntityManager t).
+	//					Esse método abstrato vai executar a função lambda passada.
+	public void executarOperacaoBancoDados(Consumer<EntityManager> operacao) {
+		
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistanceUnit);
 		EntityManager em = emf.createEntityManager();
 		
 		em.getTransaction().begin();
-		em.persist(objeto);
+		operacao.accept(em);
 		em.getTransaction().commit();
 		
 		em.close();
 		emf.close();
+		
+	}
+	
+	// TODO: colocar exceções
+	public void cadastrar(T objeto) {
+		
+		executarOperacaoBancoDados((em) -> em.persist(objeto));
 		
 	}
 
 	// TODO: colocar exceções
 	public void editar(T objeto) {
 		
-		EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistanceUnit);
-		EntityManager em = emf.createEntityManager();
-		
-		em.getTransaction().begin();
-		
-		// O "T objeto" foi instanciado antes do "EntityManager em" ser instanciado. Ou seja,
-		// o entity manager não está gerenciando esse objeto. Pra isso, estamos fazendo um "merge"
-		// para que esse objeto passe a ser gerenciado pelo entity manager atual. Caso contrário,
+		// O "T objeto" do parâmetro editar(T objeto) foi instanciado antes do "EntityManager em" do
+		// executarOperacaoBancoDados() ser instanciado. Ou seja, esse
+		// entity manager não está gerenciando esse objeto. Pra isso, estamos fazendo um "merge"
+		// para que esse objeto passe a ser gerenciado por ele. Caso contrário,
 		// a edição não será persistida.
-		em.merge(objeto);
-		
-		em.getTransaction().commit();
-		
-		em.close();
-		emf.close();
+		executarOperacaoBancoDados((em) -> em.merge(objeto));
 		
 	}
 	
 	// TODO: colocar exceções
 	public List<T> buscar() {
 		
+		// No buscar() não adianta usar executarOperacoesBancoDados(), pois aqui queremos retorno, e lá
+		// uso a interface Consumer que não tem retorno, pois o método persist() usado no cadastrar(), por
+		// exemplo, não tem retorno.
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory(persistanceUnit);
 		EntityManager em = emf.createEntityManager();
 		
@@ -103,15 +114,17 @@ public class Model<T> {
 	public static void main(String[] args) {
 		// teste mostrando como que faz a busca e update
 		Model<Usuario> model = new Model(Usuario.class);
-		List<Usuario> usuarios = model.buscar();
 		
-		Usuario usuario = usuarios
-				.stream()
-				.filter(user -> user.getEmail().equals("bruno@hotmail.com"))
-				.findFirst()
-				.get();
-		
-		model.remover(usuario);
+		model.cadastrar(new Usuario("carlos.krefer@pucpr.edu.br", "123", LocalDate.now()));
+//		List<Usuario> usuarios = model.buscar();
+//		
+//		Usuario usuario = usuarios
+//				.stream()
+//				.filter(user -> user.getEmail().equals("bruno@hotmail.com"))
+//				.findFirst()
+//				.get();
+//		
+//		model.remover(usuario);
 		
 		
 		
