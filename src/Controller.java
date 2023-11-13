@@ -135,6 +135,8 @@ public class Controller {
 		}
 		
 		filmeView.imprimirFilmes(filmesPlaylist);
+		
+		
 	}
 	
 	public static void controlarDelecaoFilme() {
