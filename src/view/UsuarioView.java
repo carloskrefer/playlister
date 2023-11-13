@@ -79,15 +79,13 @@ public class UsuarioView extends View {
 		return emailSenha;
 	}
 	
-	public String editarSenha(Usuario usuario) {
+	public void editarSenha(Usuario usuario) {
 		imprimirTitulo("EDITAR SENHA");
 		
 		System.out.println("Informe a nova senha: ");
 		String senha = preencherCampoTexto(255, false);
 		
 		usuario.setSenha(senha);
-		
-		return senha;
 	}
 	
 	public void imprimirMensagemUsuarioNaoPossuiIdadeMinima() {

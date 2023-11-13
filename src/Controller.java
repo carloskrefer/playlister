@@ -72,11 +72,44 @@ public class Controller {
 				controlarCadastroPlaylist();
 				break;
 			
+			case EDITAR:
+				controlarEdicaoNomePlaylist();
+				
+				break;
+				
 			case VOLTAR:
 				return;
 			}
 		}
 		
+	}
+	
+	public static void controlarEdicaoNomePlaylist() {
+		List<Playlist> playlistsUsuario = playlistService.buscarTodasPlaylistsUsuario(usuarioLogado);
+		Playlist playlistParaAlterar;
+		
+		if (playlistsUsuario.isEmpty()) {
+			playlistView.imprimirMensagemNaoHaPlaylistParaEdicao();
+			return;
+		}
+		
+		try {
+			playlistParaAlterar = playlistView.selecionarPlaylistEdicao(playlistsUsuario);
+		} catch (Exception e) {
+			playlistView.imprimirMensagemNaoHaIdPlaylistSelecionado();
+			return;
+		}
+		
+		while (true) {
+			try {
+				playlistView.editarNome(playlistParaAlterar);
+				playlistService.editarNome(playlistParaAlterar);
+				playlistView.imprimirMensagemNomeEditadaComSucesso();
+				break;
+			} catch (NomePlaylistJaCadastradaException e) {
+				playlistView.imprimirMensagemPlaylistJaCadastrada();
+			}
+		}
 	}
 	
 	public static void controlarCadastroPlaylist() {
@@ -108,8 +141,8 @@ public class Controller {
 			break;
 		
 		case EDITAR_SENHA:
-			String novaSenha = usuarioView.editarSenha(usuarioLogado);
-			usuarioService.editarSenha(usuarioLogado, novaSenha);
+			usuarioView.editarSenha(usuarioLogado);
+			usuarioService.editarSenha(usuarioLogado);
 			usuarioView.imprimirMensagemSenhaEditadaComSucesso();
 			break;
 			

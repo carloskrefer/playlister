@@ -57,7 +57,7 @@ public class UsuarioService {
 		usuarioModel.remover(usuario);
 	}
 	
-	public void editarSenha(Usuario usuario, String novaSenha) {
+	public void editarSenha(Usuario usuario) {
 		usuarioModel.editar(usuario);
 	}
 	

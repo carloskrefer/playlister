@@ -11,7 +11,7 @@ import view.UsuarioView.OpcaoMenuDashboard;
 public class PlaylistView extends View {
 
 	public enum OpcaoMenuInicialPlaylist {
-		CADASTRAR, VOLTAR
+		CADASTRAR, EDITAR, VOLTAR
 	}
 	
 	public PlaylistView() {
@@ -39,6 +39,15 @@ public class PlaylistView extends View {
 		return playlist;
 	}
 	
+	public void editarNome(Playlist playlist) {
+		imprimirTitulo("EDITAR NOME DE PLAYLIST");
+		
+		System.out.println("Informe o novo nome: ");
+		String novoNome = preencherCampoTexto(255, false);
+		
+		playlist.setNome(novoNome);
+	}
+	
 	public void imprimirMensagemCadastroComSucesso() {
 		imprimirTitulo("Sucesso");
 		
@@ -49,6 +58,24 @@ public class PlaylistView extends View {
 		imprimirTitulo("Erro");
 		
 		System.out.println("Desculpe, esta playlist já está cadastrada.\n");
+	}
+	
+	public void imprimirMensagemNomeEditadaComSucesso() {
+		imprimirTitulo("Sucesso");
+		
+		System.out.println("O nome da playlist foi editado com sucesso!\n");
+	}
+	
+	public void imprimirMensagemNaoHaPlaylistParaEdicao() {
+		imprimirTitulo("Erro");
+		
+		System.out.println("Não há playlists cadastradas para edição.\n");
+	}
+	
+	public void imprimirMensagemNaoHaIdPlaylistSelecionado() {
+		imprimirTitulo("Erro");
+		
+		System.out.println("Não playlist para o ID selecionado.\n");
 	}
 	
 	public void imprimirPlaylists(List<Playlist> playlists) {
@@ -65,6 +92,18 @@ public class PlaylistView extends View {
 		});
 		
 		System.out.println();
+	}
+	
+	public Playlist selecionarPlaylistEdicao(List<Playlist> playlistsUsuario) {
+		imprimirTitulo("Seleção de ID da playlist para editar");
+		
+		System.out.println("Informe o ID da playlist: ");
+		int idPlaylist = preencherInteiroID();
+		
+		return playlistsUsuario.stream().filter((playlist) -> 
+					playlist.getId() == idPlaylist
+				).findFirst().get();	
+		
 	}
 	
 

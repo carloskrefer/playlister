@@ -107,6 +107,32 @@ public class View {
 		
 	}
 	
+	protected int preencherInteiroID() {
+		
+		int numero;
+		
+		while(true) {
+			try { 
+				String texto = scanner.nextLine();
+				
+				numero = Integer.parseInt(texto);
+			
+				if (numero < 0) {
+					throw new Exception();
+				}
+				
+				break;	
+			} catch(Exception e) { 
+				System.out.println("Formato inválido.\n");
+			}
+		}
+		
+		System.out.println();
+		
+		return numero;
+		
+	}
+	
 	protected void imprimirTitulo(String titulo) {
 		System.out.println("------- " + titulo.toUpperCase() + " -------\n");
 	}

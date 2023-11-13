@@ -33,4 +33,16 @@ public class PlaylistService {
 		return playlistModel.buscarTodasPlaylistsUsuario(usuarioLogado);
 	}
 
+	public void editarNome(Playlist playlist) throws NomePlaylistJaCadastradaException {
+		
+		boolean isPlaylistJaCadastrada = playlistModel
+				.conferirSeNomePlaylistJaEstaCadastrada(playlist.getNome());
+		
+		if (isPlaylistJaCadastrada) {
+			throw new NomePlaylistJaCadastradaException();
+		}
+		
+		playlistModel.editar(playlist);
+	}
+	
 }
