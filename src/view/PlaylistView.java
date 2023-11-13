@@ -11,7 +11,8 @@ import view.UsuarioView.OpcaoMenuDashboard;
 public class PlaylistView extends View {
 
 	public enum OpcaoMenuInicialPlaylist {
-		CADASTRAR, EDITAR, VOLTAR, DELETAR
+		CADASTRAR_PLAYLIST, EDITAR_PLAYLIST, DELETAR_PLAYLIST, VOLTAR,
+		CADASTRAR_FILME, EDITAR_FILME, DELETAR_FILME
 	}
 	
 	public PlaylistView() {
@@ -84,6 +85,12 @@ public class PlaylistView extends View {
 		System.out.println("Não playlist para o ID selecionado.\n");
 	}
 	
+	public void imprimirMensagemNaoHaPlaylist() {
+		imprimirTitulo("Erro");
+		
+		System.out.println("Não é possível prosseguir, pois não há playlists cadastradas.\n");
+	}
+	
 	public void imprimirPlaylists(List<Playlist> playlists) {
 		imprimirTitulo("Lista de playlists");
 		
@@ -107,6 +114,18 @@ public class PlaylistView extends View {
 	
 	public Playlist selecionarPlaylistExclusao(List<Playlist> playlistsUsuario) {
 		imprimirTitulo("Seleção de ID da playlist para exclusão");
+		
+		System.out.println("Informe o ID da playlist: ");
+		int idPlaylist = preencherInteiroID();
+		
+		return playlistsUsuario.stream().filter((playlist) -> 
+					playlist.getId() == idPlaylist
+				).findFirst().get();	
+		
+	}
+	
+	public Playlist selecionarPlaylist(List<Playlist> playlistsUsuario) {
+		imprimirTitulo("Seleção de ID da playlist");
 		
 		System.out.println("Informe o ID da playlist: ");
 		int idPlaylist = preencherInteiroID();

@@ -1,13 +1,17 @@
 import java.util.List;
 
+import entity.Filme;
 import entity.Playlist;
 import entity.Usuario;
 import service.EmailJaCadastradoException;
+import service.FilmeJaCadastradoPlaylistException;
+import service.FilmeService;
 import service.LoginInvalidoException;
 import service.NomePlaylistJaCadastradaException;
 import service.PlaylistService;
 import service.UsuarioNaoPossuiIdadeMinimaException;
 import service.UsuarioService;
+import view.FilmeView;
 import view.PlaylistView;
 import view.PlaylistView.OpcaoMenuInicialPlaylist;
 import view.UsuarioView;
@@ -21,12 +25,16 @@ public class Controller {
 	private static Usuario usuarioLogado;
 	private static PlaylistView playlistView;
 	private static PlaylistService playlistService;
+	private static FilmeView filmeView;
+	private static FilmeService filmeService;
 	
 	public static void main(String[] args) {
 		usuarioService = new UsuarioService();
 		usuarioView = new UsuarioView();
 		playlistView = new PlaylistView();
 		playlistService = new PlaylistService();
+		filmeView = new FilmeView();
+		filmeService = new FilmeService();
 		
 		while (true) {
 			usuarioLogado = controlarLoginOuCadastro();
@@ -68,16 +76,20 @@ public class Controller {
 					playlistView.selecionarOpcaoMenuInicialPlaylist();
 			
 			switch (opcaoMenuInicialPlaylist) {
-			case CADASTRAR:
+			case CADASTRAR_PLAYLIST:
 				controlarCadastroPlaylist();
 				break;
 			
-			case EDITAR:
+			case EDITAR_PLAYLIST:
 				controlarEdicaoNomePlaylist();
 				break;
 				
-			case DELETAR:
+			case DELETAR_PLAYLIST:
 				controlarExclusaoPlaylist();
+				break;
+				
+			case CADASTRAR_FILME:
+				controlarCadastroFilme();
 				break;
 				
 			case VOLTAR:
@@ -85,6 +97,31 @@ public class Controller {
 			}
 		}
 		
+	}
+	
+	public static void controlarCadastroFilme() {
+		List<Playlist> playlistsUsuario = playlistService.buscarTodasPlaylistsUsuario(usuarioLogado);
+		Playlist playlistParaCadastrarFilme;
+		
+		if (playlistsUsuario.isEmpty()) {
+			playlistView.imprimirMensagemNaoHaPlaylist();
+			return;
+		}
+		
+		try {
+			playlistParaCadastrarFilme = playlistView.selecionarPlaylist(playlistsUsuario);
+		} catch (Exception e) {
+			playlistView.imprimirMensagemNaoHaIdPlaylistSelecionado();
+			return;
+		}
+		
+		Filme filme = filmeView.cadastrar(playlistParaCadastrarFilme);
+		
+		try {
+			filmeService.cadastrar(filme);
+		} catch (FilmeJaCadastradoPlaylistException e) {
+			filmeView.imprimirMensagemFilmeJaCadastrado();
+		}
 	}
 	
 	public static void controlarExclusaoPlaylist() {
