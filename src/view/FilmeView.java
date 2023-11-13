@@ -49,6 +49,12 @@ public class FilmeView extends View {
 		System.out.println("Edição de filme realizada com sucesso!\n");
 	}
 	
+	public void imprimirMensagemDelecaoComSucesso() {
+		imprimirTitulo("Sucesso");
+		
+		System.out.println("Filme deletado com sucesso!\n");
+	}
+	
 	public void imprimirMensagemNaoHaFilme() {
 		imprimirTitulo("Erro");
 		

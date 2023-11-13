@@ -96,11 +96,83 @@ public class Controller {
 				controlarEdicaoFilme();
 				break;
 				
+			case DELETAR_FILME:
+				controlarDelecaoFilme();
+				break;
+				
+			case VISUALIZAR_FILME:
+				controlarVisualizacaoFilme();
+				break;
+				
 			case VOLTAR:
 				return;
 			}
 		}
 		
+	}
+	
+	public static void controlarVisualizacaoFilme() {
+		List<Playlist> playlistsUsuario = playlistService.buscarTodasPlaylistsUsuario(usuarioLogado);
+		Playlist playlistFilme;
+		
+		if (playlistsUsuario.isEmpty()) {
+			playlistView.imprimirMensagemNaoHaPlaylist();
+			return;
+		}
+		
+		try {
+			playlistFilme = playlistView.selecionarPlaylist(playlistsUsuario);
+		} catch (Exception e) {
+			playlistView.imprimirMensagemNaoHaIdPlaylistSelecionado();
+			return;
+		}
+		
+		List<Filme> filmesPlaylist = filmeService.buscarTodosFilmesPlaylist(playlistFilme);
+		
+		if (filmesPlaylist.isEmpty()) {
+			filmeView.imprimirMensagemNaoHaFilme();
+			return;
+		}
+		
+		filmeView.imprimirFilmes(filmesPlaylist);
+	}
+	
+	public static void controlarDelecaoFilme() {
+		List<Playlist> playlistsUsuario = playlistService.buscarTodasPlaylistsUsuario(usuarioLogado);
+		Playlist playlistParaDeletarFilme;
+		Filme filmeParaDeletar;
+		
+		if (playlistsUsuario.isEmpty()) {
+			playlistView.imprimirMensagemNaoHaPlaylist();
+			return;
+		}
+		
+		try {
+			playlistParaDeletarFilme = playlistView.selecionarPlaylist(playlistsUsuario);
+		} catch (Exception e) {
+			playlistView.imprimirMensagemNaoHaIdPlaylistSelecionado();
+			return;
+		}
+		
+		List<Filme> filmesPlaylist = filmeService.buscarTodosFilmesPlaylist(playlistParaDeletarFilme);
+		
+		if (filmesPlaylist.isEmpty()) {
+			filmeView.imprimirMensagemNaoHaFilme();
+			return;
+		}
+		
+		filmeView.imprimirFilmes(filmesPlaylist);
+		
+		try {
+			filmeParaDeletar = filmeView.selecionarFilme(filmesPlaylist);
+		} catch (Exception e) {
+			playlistView.imprimirMensagemNaoHaIdPlaylistSelecionado();
+			return;
+		}
+			
+		filmeService.remover(filmeParaDeletar);
+		filmeView.imprimirMensagemDelecaoComSucesso();
+		return;
 	}
 	
 	public static void controlarEdicaoFilme() {

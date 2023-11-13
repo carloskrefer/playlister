@@ -12,7 +12,7 @@ public class PlaylistView extends View {
 
 	public enum OpcaoMenuInicialPlaylist {
 		CADASTRAR_PLAYLIST, EDITAR_PLAYLIST, DELETAR_PLAYLIST, VOLTAR,
-		CADASTRAR_FILME, EDITAR_FILME, DELETAR_FILME
+		CADASTRAR_FILME, EDITAR_FILME, DELETAR_FILME, VISUALIZAR_FILME
 	}
 	
 	public PlaylistView() {

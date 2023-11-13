@@ -54,6 +54,12 @@ public class FilmeService {
 
 	}
 	
+	public void remover(Filme filme) {
+
+		filmeModel.remover(filme);
+
+	}
+	
 	public List<Filme> buscarTodosFilmesPlaylist(Playlist playlist) {
 		return filmeModel.buscarTodosFilmesPlaylist(playlist);
 	}
