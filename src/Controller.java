@@ -1,10 +1,15 @@
 import java.util.List;
 
+import entity.Playlist;
 import entity.Usuario;
 import service.EmailJaCadastradoException;
 import service.LoginInvalidoException;
+import service.NomePlaylistJaCadastradaException;
+import service.PlaylistService;
 import service.UsuarioNaoPossuiIdadeMinimaException;
 import service.UsuarioService;
+import view.PlaylistView;
+import view.PlaylistView.OpcaoMenuInicialPlaylist;
 import view.UsuarioView;
 import view.UsuarioView.OpcaoMenuDashboard;
 import view.UsuarioView.OpcaoMenuInicial;
@@ -14,10 +19,14 @@ public class Controller {
 	private static UsuarioView usuarioView;
 	private static UsuarioService usuarioService;
 	private static Usuario usuarioLogado;
+	private static PlaylistView playlistView;
+	private static PlaylistService playlistService;
 	
 	public static void main(String[] args) {
 		usuarioService = new UsuarioService();
 		usuarioView = new UsuarioView();
+		playlistView = new PlaylistView();
+		playlistService = new PlaylistService();
 		
 		while (true) {
 			usuarioLogado = controlarLoginOuCadastro();
@@ -28,21 +37,47 @@ public class Controller {
 	}
 
 	private static void controlarDashboardUsuarioLogado() {
-		OpcaoMenuDashboard opcaoMenuDashboard = usuarioView.selecionarOpcaoDashboard();
-		
 		while (true) {
+			OpcaoMenuDashboard opcaoMenuDashboard = usuarioView.selecionarOpcaoDashboard();
 			switch (opcaoMenuDashboard) {
 			case PAGINA_DO_USUARIO:
-				OpcaoMenuPaginaUsuario opcaoSelecionada = controlarPaginaUsuario();
-				if (opcaoSelecionada.equals(OpcaoMenuPaginaUsuario.EXCLUIR_CONTA)) {
+				OpcaoMenuPaginaUsuario opcaoPaginaUsuarioSelecionada = controlarPaginaUsuario();
+				if (opcaoPaginaUsuarioSelecionada.equals(OpcaoMenuPaginaUsuario.EXCLUIR_CONTA)) {
 					return;
 				}
 				break;
 				
 			case MINHAS_PLAYLISTS:
-				break;
+				OpcaoMenuInicialPlaylist opcaoMenuInicialPlaylistSelecionada = 
+					controlarPaginaInicialPlaylist();
 			}
 		}
+	}
+	
+	public static OpcaoMenuInicialPlaylist controlarPaginaInicialPlaylist() {
+		OpcaoMenuInicialPlaylist opcaoMenuInicialPlaylist = 
+				playlistView.selecionarOpcaoMenuInicialPlaylist();
+		
+		switch (opcaoMenuInicialPlaylist) {
+		case CADASTRAR:
+			controlarCadastroPlaylist();
+		}
+		
+		return null;
+	}
+	
+	public static void controlarCadastroPlaylist() {
+		while (true) {
+			try {
+				Playlist usuario = playlistView.cadastrar(usuarioLogado);
+				playlistService.cadastrar(usuario);
+				break;
+			} catch(NomePlaylistJaCadastradaException e) {
+				playlistView.imprimirMensagemPlaylistJaCadastrada();
+			}
+		}
+		playlistView.imprimirMensagemCadastroComSucesso();
+
 	}
 	
 	public static OpcaoMenuPaginaUsuario controlarPaginaUsuario() {

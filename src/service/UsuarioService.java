@@ -23,8 +23,6 @@ public class UsuarioService {
 			throw new UsuarioNaoPossuiIdadeMinimaException();
 		}
 		
-		usuarioModel = new UsuarioModel();
-		
 		boolean isEmailJaCadastrado = usuarioModel
 				.conferirSeEmailJaEstaCadastrado(usuario.getEmail());
 		
