@@ -16,7 +16,7 @@ public class UsuarioView extends View {
 	}
 	
 	public enum OpcaoMenuPaginaUsuario {
-		VISUALIZAR_TODOS_USUARIOS, VOLTAR, EXCLUIR_CONTA
+		VISUALIZAR_TODOS_USUARIOS, VOLTAR, EXCLUIR_CONTA, EDITAR_SENHA
 	}
 	
 	public UsuarioView() {
@@ -79,6 +79,17 @@ public class UsuarioView extends View {
 		return emailSenha;
 	}
 	
+	public String editarSenha(Usuario usuario) {
+		imprimirTitulo("EDITAR SENHA");
+		
+		System.out.println("Informe a nova senha: ");
+		String senha = preencherCampoTexto(255, false);
+		
+		usuario.setSenha(senha);
+		
+		return senha;
+	}
+	
 	public void imprimirMensagemUsuarioNaoPossuiIdadeMinima() {
 		imprimirTitulo("Erro");
 		
@@ -107,6 +118,12 @@ public class UsuarioView extends View {
 		imprimirTitulo("Sucesso");
 		
 		System.out.println("Login realizado com sucesso!\n");
+	}
+	
+	public void imprimirMensagemSenhaEditadaComSucesso() {
+		imprimirTitulo("Sucesso");
+		
+		System.out.println("A sua senha foi editada com sucesso!.\n");
 	}
 	
 	public void imprimirUsuarios(List<Usuario> usuarios) {

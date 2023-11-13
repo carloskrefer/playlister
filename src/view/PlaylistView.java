@@ -11,7 +11,7 @@ import view.UsuarioView.OpcaoMenuDashboard;
 public class PlaylistView extends View {
 
 	public enum OpcaoMenuInicialPlaylist {
-		CADASTRAR, VISUALIZAR, VOLTAR
+		CADASTRAR, VOLTAR
 	}
 	
 	public PlaylistView() {

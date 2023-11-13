@@ -61,6 +61,9 @@ public class Controller {
 	public static void controlarPaginaInicialPlaylist() {
 		
 		while (true) {
+			List<Playlist> todasPlaylistsUsuario = playlistService.buscarTodasPlaylistsUsuario(usuarioLogado);
+			playlistView.imprimirPlaylists(todasPlaylistsUsuario);
+			
 			OpcaoMenuInicialPlaylist opcaoMenuInicialPlaylist = 
 					playlistView.selecionarOpcaoMenuInicialPlaylist();
 			
@@ -68,21 +71,12 @@ public class Controller {
 			case CADASTRAR:
 				controlarCadastroPlaylist();
 				break;
-				
-			case VISUALIZAR:
-				controlarPaginaVisualizacaoPlaylists();
-				break;
 			
 			case VOLTAR:
 				return;
 			}
 		}
 		
-	}
-	
-	public static void controlarPaginaVisualizacaoPlaylists() {
-		List<Playlist> todasPlaylistsUsuario = playlistService.buscarTodasPlaylistsUsuario(usuarioLogado);
-		playlistView.imprimirPlaylists(todasPlaylistsUsuario);
 	}
 	
 	public static void controlarCadastroPlaylist() {
@@ -111,6 +105,12 @@ public class Controller {
 		case EXCLUIR_CONTA:
 			usuarioService.deletarConta(usuarioLogado);
 			usuarioLogado = null;
+			break;
+		
+		case EDITAR_SENHA:
+			String novaSenha = usuarioView.editarSenha(usuarioLogado);
+			usuarioService.editarSenha(usuarioLogado, novaSenha);
+			usuarioView.imprimirMensagemSenhaEditadaComSucesso();
 			break;
 			
 		case VOLTAR:
