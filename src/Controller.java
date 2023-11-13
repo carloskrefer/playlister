@@ -92,11 +92,61 @@ public class Controller {
 				controlarCadastroFilme();
 				break;
 				
+			case EDITAR_FILME:
+				controlarEdicaoFilme();
+				break;
+				
 			case VOLTAR:
 				return;
 			}
 		}
 		
+	}
+	
+	public static void controlarEdicaoFilme() {
+		List<Playlist> playlistsUsuario = playlistService.buscarTodasPlaylistsUsuario(usuarioLogado);
+		Playlist playlistParaEditarFilme;
+		Filme filmeParaEditar;
+		
+		if (playlistsUsuario.isEmpty()) {
+			playlistView.imprimirMensagemNaoHaPlaylist();
+			return;
+		}
+		
+		try {
+			playlistParaEditarFilme = playlistView.selecionarPlaylist(playlistsUsuario);
+		} catch (Exception e) {
+			playlistView.imprimirMensagemNaoHaIdPlaylistSelecionado();
+			return;
+		}
+		
+		List<Filme> filmesPlaylist = filmeService.buscarTodosFilmesPlaylist(playlistParaEditarFilme);
+		
+		if (filmesPlaylist.isEmpty()) {
+			filmeView.imprimirMensagemNaoHaFilme();
+			return;
+		}
+		
+		filmeView.imprimirFilmes(filmesPlaylist);
+		
+		try {
+			filmeParaEditar = filmeView.selecionarFilme(filmesPlaylist);
+		} catch (Exception e) {
+			playlistView.imprimirMensagemNaoHaIdPlaylistSelecionado();
+			return;
+		}
+			
+		
+		while (true) {
+			filmeView.editar(filmeParaEditar);
+			try {
+				filmeService.editar(filmeParaEditar);
+				filmeView.imprimirMensagemEdicaoComSucesso();
+				return;
+			} catch (FilmeJaCadastradoPlaylistException e) {
+				filmeView.imprimirMensagemFilmeJaCadastrado();
+			}
+		}
 	}
 	
 	public static void controlarCadastroFilme() {
@@ -119,6 +169,7 @@ public class Controller {
 		
 		try {
 			filmeService.cadastrar(filme);
+			filmeView.imprimirMensagemCadastroComSucesso();
 		} catch (FilmeJaCadastradoPlaylistException e) {
 			filmeView.imprimirMensagemFilmeJaCadastrado();
 		}

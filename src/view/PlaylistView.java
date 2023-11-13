@@ -82,7 +82,7 @@ public class PlaylistView extends View {
 	public void imprimirMensagemNaoHaIdPlaylistSelecionado() {
 		imprimirTitulo("Erro");
 		
-		System.out.println("Não playlist para o ID selecionado.\n");
+		System.out.println("Não há playlist para o ID selecionado.\n");
 	}
 	
 	public void imprimirMensagemNaoHaPlaylist() {
