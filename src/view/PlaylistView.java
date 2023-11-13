@@ -2,6 +2,7 @@ package view;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import entity.Playlist;
 import entity.Usuario;
@@ -10,7 +11,7 @@ import view.UsuarioView.OpcaoMenuDashboard;
 public class PlaylistView extends View {
 
 	public enum OpcaoMenuInicialPlaylist {
-		CADASTRAR, VISUALIZAR
+		CADASTRAR, VISUALIZAR, VOLTAR
 	}
 	
 	public PlaylistView() {
@@ -41,13 +42,29 @@ public class PlaylistView extends View {
 	public void imprimirMensagemCadastroComSucesso() {
 		imprimirTitulo("Sucesso");
 		
-		System.out.println("Cadastro de playlis realizado com sucesso!\n");
+		System.out.println("Cadastro de playlist realizado com sucesso!\n");
 	}
 	
 	public void imprimirMensagemPlaylistJaCadastrada() {
 		imprimirTitulo("Erro");
 		
-		System.out.println("Desculpe, esta playlist já está cadastrado.\n");
+		System.out.println("Desculpe, esta playlist já está cadastrada.\n");
+	}
+	
+	public void imprimirPlaylists(List<Playlist> playlists) {
+		imprimirTitulo("Lista de playlists");
+		
+		System.out.println("Confira o ID de todas suas playlists, seus nomes e datas de criação.\n");
+		
+		playlists.stream().forEach((playlist) -> {
+			System.out.println(
+					playlist.getId() + " \t" + 
+					playlist.getNome() + " \t" + 
+					playlist.getDataHoraCriacao()
+			);
+		});
+		
+		System.out.println();
 	}
 	
 

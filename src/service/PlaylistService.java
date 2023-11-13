@@ -2,6 +2,7 @@ package service;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
 
 import entity.Playlist;
 import entity.Usuario;
@@ -26,6 +27,10 @@ public class PlaylistService {
 		
 		playlistModel.cadastrar(playlist);
 
+	}
+	
+	public List<Playlist> buscarTodasPlaylistsUsuario(Usuario usuarioLogado) {
+		return playlistModel.buscarTodasPlaylistsUsuario(usuarioLogado);
 	}
 
 }

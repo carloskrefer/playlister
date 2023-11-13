@@ -48,22 +48,41 @@ public class Controller {
 				break;
 				
 			case MINHAS_PLAYLISTS:
-				OpcaoMenuInicialPlaylist opcaoMenuInicialPlaylistSelecionada = 
-					controlarPaginaInicialPlaylist();
+				controlarPaginaInicialPlaylist();
+				break;
+			
+			case SAIR:
+				usuarioLogado = null;
+				return;
 			}
 		}
 	}
 	
-	public static OpcaoMenuInicialPlaylist controlarPaginaInicialPlaylist() {
-		OpcaoMenuInicialPlaylist opcaoMenuInicialPlaylist = 
-				playlistView.selecionarOpcaoMenuInicialPlaylist();
+	public static void controlarPaginaInicialPlaylist() {
 		
-		switch (opcaoMenuInicialPlaylist) {
-		case CADASTRAR:
-			controlarCadastroPlaylist();
+		while (true) {
+			OpcaoMenuInicialPlaylist opcaoMenuInicialPlaylist = 
+					playlistView.selecionarOpcaoMenuInicialPlaylist();
+			
+			switch (opcaoMenuInicialPlaylist) {
+			case CADASTRAR:
+				controlarCadastroPlaylist();
+				break;
+				
+			case VISUALIZAR:
+				controlarPaginaVisualizacaoPlaylists();
+				break;
+			
+			case VOLTAR:
+				return;
+			}
 		}
 		
-		return null;
+	}
+	
+	public static void controlarPaginaVisualizacaoPlaylists() {
+		List<Playlist> todasPlaylistsUsuario = playlistService.buscarTodasPlaylistsUsuario(usuarioLogado);
+		playlistView.imprimirPlaylists(todasPlaylistsUsuario);
 	}
 	
 	public static void controlarCadastroPlaylist() {

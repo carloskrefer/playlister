@@ -12,7 +12,7 @@ public class UsuarioView extends View {
 	}
 	
 	public enum OpcaoMenuDashboard {
-		PAGINA_DO_USUARIO, MINHAS_PLAYLISTS
+		PAGINA_DO_USUARIO, MINHAS_PLAYLISTS, SAIR
 	}
 	
 	public enum OpcaoMenuPaginaUsuario {
