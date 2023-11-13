@@ -74,7 +74,10 @@ public class Controller {
 			
 			case EDITAR:
 				controlarEdicaoNomePlaylist();
+				break;
 				
+			case DELETAR:
+				controlarExclusaoPlaylist();
 				break;
 				
 			case VOLTAR:
@@ -82,6 +85,25 @@ public class Controller {
 			}
 		}
 		
+	}
+	
+	public static void controlarExclusaoPlaylist() {
+		List<Playlist> playlistsUsuario = playlistService.buscarTodasPlaylistsUsuario(usuarioLogado);
+		Playlist playlistParaExcluir;
+		
+		if (playlistsUsuario.isEmpty()) {
+			playlistView.imprimirMensagemNaoHaPlaylistParaExcluir();
+			return;
+		}
+		
+		try {
+			playlistParaExcluir = playlistView.selecionarPlaylistExclusao(playlistsUsuario);
+		} catch (Exception e) {
+			playlistView.imprimirMensagemNaoHaIdPlaylistSelecionado();
+			return;
+		}
+
+		playlistService.deletarPlaylist(playlistParaExcluir);
 	}
 	
 	public static void controlarEdicaoNomePlaylist() {

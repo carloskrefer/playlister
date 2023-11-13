@@ -45,4 +45,8 @@ public class PlaylistService {
 		playlistModel.editar(playlist);
 	}
 	
+	public void deletarPlaylist(Playlist playlist) {	
+		playlistModel.remover(playlist);
+	}
+	
 }
