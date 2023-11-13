@@ -1,7 +1,9 @@
 package entity;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,6 +11,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Filme {
@@ -27,6 +31,12 @@ public class Filme {
 	private LocalDate dataEstreia;
 	
 	private int duracaoMinutos;
+	
+	// CascadeType.REMOVE faz com que remova todas avaliações
+	// deste filme quando ele é removido.
+	// mappedBy é o nome do atributo com tag @OneToOne na avaliação.
+	@OneToOne(cascade = CascadeType.REMOVE, mappedBy = "filme")
+    private Avaliacao avaliacao;
 	
 	public Filme() {
 		

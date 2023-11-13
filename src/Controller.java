@@ -3,6 +3,7 @@ import java.util.List;
 import entity.Filme;
 import entity.Playlist;
 import entity.Usuario;
+import service.AvaliacaoService;
 import service.EmailJaCadastradoException;
 import service.FilmeJaCadastradoPlaylistException;
 import service.FilmeService;
@@ -11,6 +12,8 @@ import service.NomePlaylistJaCadastradaException;
 import service.PlaylistService;
 import service.UsuarioNaoPossuiIdadeMinimaException;
 import service.UsuarioService;
+import view.AvaliacaoView;
+import view.AvaliacaoView.OpcaoMenuAvaliacao;
 import view.FilmeView;
 import view.PlaylistView;
 import view.PlaylistView.OpcaoMenuInicialPlaylist;
@@ -27,6 +30,8 @@ public class Controller {
 	private static PlaylistService playlistService;
 	private static FilmeView filmeView;
 	private static FilmeService filmeService;
+	private static AvaliacaoView avaliacaoView;
+	private static AvaliacaoService avaliacaoService;
 	
 	public static void main(String[] args) {
 		usuarioService = new UsuarioService();
@@ -35,6 +40,8 @@ public class Controller {
 		playlistService = new PlaylistService();
 		filmeView = new FilmeView();
 		filmeService = new FilmeService();
+		avaliacaoView = new AvaliacaoView();
+		avaliacaoService = new AvaliacaoService();
 		
 		while (true) {
 			usuarioLogado = controlarLoginOuCadastro();
@@ -114,6 +121,7 @@ public class Controller {
 	public static void controlarVisualizacaoFilme() {
 		List<Playlist> playlistsUsuario = playlistService.buscarTodasPlaylistsUsuario(usuarioLogado);
 		Playlist playlistFilme;
+		Filme filmePlaylist;
 		
 		if (playlistsUsuario.isEmpty()) {
 			playlistView.imprimirMensagemNaoHaPlaylist();
@@ -136,6 +144,20 @@ public class Controller {
 		
 		filmeView.imprimirFilmes(filmesPlaylist);
 		
+		
+		OpcaoMenuAvaliacao opcaoAvaliacao = avaliacaoView.selecionarOpcaoMenuAvaliacao();
+		
+		switch (opcaoAvaliacao) {
+		case CADASTRAR:
+			try {
+				filmePlaylist = filmeView.selecionarFilme(filmesPlaylist);
+			} catch (Exception e) {
+				filmeView.imprimirMensagemNaoHaIdFilmeSelecionado();
+				return;
+			}
+			avaliacaoService.cadastrar(avaliacaoView.cadastrar(filmePlaylist));
+			break;
+		}
 		
 	}
 	
